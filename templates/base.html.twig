@@ -1,19 +1,52 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset ('assets/fonts/icomoon/style.css')}}">
+    <link rel="stylesheet" href="{{asset ('assets/fonts/flaticon/font/flaticon.css')}}">
+    <link rel="stylesheet" href="{{asset ('assets/css/tiny-slider.css')}}">
+    <link rel="stylesheet" href="{{asset ('assets/css/aos.css')}}">
+    <link rel="stylesheet" href="{{asset ('assets/css/glightbox.min.css')}}">
+    <link rel="stylesheet" href="{{asset ('assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset ('assets/css/style.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Sltek</title>
+
+    {% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#site-navbar-target" data-bs-offset="100">
+    {% include "navigation/_navbar.html.twig" %}
+    <div class="margin-nav">
         {% block body %}{% endblock %}
-    </body>
+    </div>
+    {{ include("navigation/_footer.html.twig") }}
+
+    <div id="overlayer"></div>
+    <div class="loader">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <script src="{{asset ('assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset ('assets/js/tiny-slider.js')}}"></script>
+    <script src="{{asset ('assets/js/aos.js')}}"></script>
+    <script src="{{asset ('assets/js/navbar.js')}}"></script>
+    <script src="{{asset ('assets/js/page-scroll.js')}}"></script>
+    <script src="{{asset ('assets/js/counter.js')}}"></script>
+    <script src="{{asset ('assets/js/glightbox.min.js')}}"></script>
+    <script src="{{asset ('assets/js/custom.js')}}"></script>
+</body>
+
 </html>
