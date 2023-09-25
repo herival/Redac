@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -36,6 +39,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Inter::class, mappedBy="technicien")
+     */
+    private $inters;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $statut;
+
+    public function __construct()
+    {
+        $this->inters = new ArrayCollection();
+        $this->createdAt = new \DateTime;
+
+    }
 
     public function getId(): ?int
     {
@@ -124,5 +164,95 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(?string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inter>
+     */
+    public function getInters(): Collection
+    {
+        return $this->inters;
+    }
+
+    public function addInter(Inter $inter): self
+    {
+        if (!$this->inters->contains($inter)) {
+            $this->inters[] = $inter;
+            $inter->setTechnicien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInter(Inter $inter): self
+    {
+        if ($this->inters->removeElement($inter)) {
+            // set the owning side to null (unless already changed)
+            if ($inter->getTechnicien() === $this) {
+                $inter->setTechnicien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isStatut(): ?bool
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?bool $statut): self
+    {
+        $this->statut = $statut;
+
+        return $this;
     }
 }
