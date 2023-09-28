@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recap{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
+        <h1>Recap periode</h1>
+
+        <table class="table">
+            <thead>
+                <th scope="col">Tech</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tech in liste %}
+                <tr>
+                    <td>{{tech[0].technicien.nom}} {{tech[0].technicien.prenom}}</td>
+                    <td class="text-center">{{tech.nombre}}</td>
+                    <td class="text-end">{{(tech.salaire)|number_format(0, ',', ' ')}}€</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
+
+    </div>
+</div>
+<div class="mb-footer"></div>
+{% endblock %}

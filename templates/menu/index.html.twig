@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu inter{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center">
+  <div class="col-md-3">
+
+    <h1 class="text-center">Menu</h1>
+
+    <p class="d-grid gap-2 px-2">
+      <a class="btn btn-success" data-bs-toggle="collapse" href="#gestiontech" role="button" aria-expanded="false"
+        aria-controls="collapseExample">
+        Gestion techs
+      </a>
+    </p>
+    <div class="collapse px-2" id="gestiontech">
+      <div class="card card-body">
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_compte')}}" class="btn btn-primary">Liste des techniciens</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_register')}}" class="btn btn-primary">Nouveau tech</a>
+        </div>
+      </div>
+    </div>
+    <p class="d-grid gap-2 px-2 mt-2">
+      <a class="btn btn-success" data-bs-toggle="collapse" href="#gestioninter" role="button" aria-expanded="false"
+        aria-controls="collapseExample">
+        Gestion Inters
+      </a>
+    </p>
+    <div class="collapse px-2" id="gestioninter">
+      <div class="card card-body">
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_recap')}}" class="btn btn-primary">Recap période</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_inter_new')}}" class="btn btn-primary">Nouvelle intervention</a>
+        </div>
+        {# <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('date_setting', {date: 'startdate'})}}" class="btn btn-primary">Debut période</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('date_setting', {date: 'enddate'})}}" class="btn btn-primary">Fin période</a>
+        </div> #}
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('change_periode')}}" class="btn btn-primary">Changer Période</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('inter_jour')}}" class="btn btn-primary">Inter du jour</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('insertion_inter_mois')}}" class="btn btn-primary"
+            onclick="return confirm('Etes-vous sûr de vouloir inserer les interventions de la période séléctionnée?')">Insertion
+            inter periode</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
