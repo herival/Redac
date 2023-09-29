@@ -75,6 +75,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $poste;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $client;
+
     public function __construct()
     {
         $this->poste = 'tech';
@@ -271,6 +276,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPoste(?string $poste): self
     {
         $this->poste = $poste;
+
+        return $this;
+    }
+
+    public function getClient(): ?string
+    {
+        return $this->client;
+    }
+
+    public function setClient(string $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

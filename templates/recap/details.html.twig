@@ -26,6 +26,7 @@
       %}
             </thead>
             <tbody>
+                {% set total = 0 %}
                 {% for inter in liste %}
                 <tr>
                     <td> <a href="{{path('edit_inter', {id:inter.id})}}" class="text-decoration-none text-secondary">{{ trans_day_hash[inter.date|date('l')] }} {{inter.date|date('j-m-Y')}}</a> 
@@ -34,8 +35,12 @@
                         {% endif %}</td>
                     <td class="text-end">{{(inter.salaire)|number_format(0, ',', ' ')}}€</td>
                 </tr>
+                {% set total = total + inter.salaire %}
                 {% endfor %}
-
+                <tr class="table-info">
+                    <td>Total</td>
+                    <td class="text-end">{{total|number_format(0, ',',' ')}} €</td>
+                </tr>
             </tbody>
         </table>
         <a href="{{path('app_recap')}}" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>

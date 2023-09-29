@@ -57,6 +57,25 @@
         </div>
       </div>
     </div>
+    <p class="d-grid gap-2 px-2">
+      <a class="btn btn-success" data-bs-toggle="collapse" href="#facturation" role="button" aria-expanded="false"
+        aria-controls="collapseExample">
+        Facturations
+      </a>
+    </p>
+    <div class="collapse px-2" id="facturation">
+      <div class="card card-body">
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_facture', {client: 'B2A'})}}" class="btn btn-primary">Factures B2A</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_facture', {client: 'HELP1FO'})}}" class="btn btn-primary">Factures Help1fo</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_facture', {client: 'AUTRE'})}}" class="btn btn-primary">Factures AUTRES</a>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>
