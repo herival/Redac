@@ -65,6 +65,39 @@ class InterRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+    * @return Inter[] Returns an array of Inter objects
+    */
+   public function findByGroupUser($date_debut, $date_fin): array
+   {
+       return $this->createQueryBuilder('f')
+        ->addSelect('count(f.technicien) as nombre')
+        ->addSelect('SUM(f.Salaire) as salaire')
+        ->andWhere('f.date BETWEEN :date_debut AND :date_fin')
+        ->andWhere('f.presence = true')
+        ->setParameter('date_debut', $date_debut)
+        ->setParameter('date_fin', $date_fin)
+        ->groupBy('f.technicien')
+        ->getQuery()
+        ->getResult()
+        ;
+   }
+   /**
+    * @return Inter[] Returns an array of Inter objects
+    */
+   public function findInterByUser($technicien ,$date_debut, $date_fin): array
+   {
+       return $this->createQueryBuilder('i')
+           ->andWhere('i.technicien = :val')
+           ->andWhere('i.date BETWEEN :date_debut AND :date_fin')
+           ->andWhere('i.presence = true')
+           ->setParameter('date_debut', $date_debut)
+           ->setParameter('date_fin', $date_fin)
+           ->setParameter('val', $technicien)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 //    /**
 //     * @return Inter[] Returns an array of Inter objects
 //     */

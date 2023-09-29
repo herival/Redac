@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
+        <h1>Modifier Inter</h1>
+
+        <div class="m-2">
+            {{ form_start(form) }}
+            {{ form_row(form.Date) }}
+            {{ form_row(form.Anomalie) }}
+            {{ form_row(form.Salaire) }}
+            {{ form_row(form.technicien) }}    
+            <button type="submit" class="btn btn-primary w-100">Modifier</button>
+            {{ form_end(form) }}
+            <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
+        </div>
+
+    </div>
+</div>
+<div class="mb-footer"></div>
+
+{% endblock %}

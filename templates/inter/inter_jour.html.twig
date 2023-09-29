@@ -3,44 +3,58 @@
 {% block title %}Inter du jour{% endblock %}
 
 {% block body %}
-<div class="text-center mt-1">
+<div class="row d-flex justify-content-center">
+  <div class="col-md-3">
 
-  <h1 class="">Inters du jour</h1>
-  <span class="badge bg-info bg-sm">{{date_url|date('d/m/Y')}}</span>
-</div>
 
-<div class="text-center mb-2">
-  <input type="date" id="date" name="date" value="{{date_url}}" onchange="submitdate()">
-</div>
+    <div class="text-center mt-1">
 
-{% for inter in inter_jour %}
-{% if inter.presence == 1 %}
+      <h1 class="">Inters du jour</h1>
+      <span class="badge bg-info bg-sm">{{date_url|date('d/m/Y')}}</span>
+    </div>
 
-<div class="alert alert-success d-flex justify-content-between">
-  <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param=" class="text-decoration-none text-dark">
-    <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
-    {% if inter.anomalie is not null %}
-    <i class="fas fa-exclamation-triangle text-danger"></i>
+    <div class="text-center mb-2">
+      <input type="date" id="date" name="date" value="{{date_url}}" onchange="submitdate()">
+    </div>
+
+    {% for inter in inter_jour %}
+    {% if inter.presence == 1 %}
+
+    <div class="alert alert-success d-flex justify-content-between">
+      <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param="
+        class="text-decoration-none text-dark">
+        <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
+        {% if inter.anomalie is not null %}
+        <i class="fas fa-exclamation-triangle text-danger"></i>
+        {% endif %}
+      </a>
+      <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
+        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="warning"
+          data-on="Present" data-off="Absent">
+      </a>
+    </div>
+
+    {% else %}
+    <div class="alert alert-secondary d-flex justify-content-between">
+      <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param="
+        class="text-decoration-none text-dark">
+        <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
+      </a>
+      <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
+        <input type="checkbox" data-toggle="toggle" data-onstyle="success" data-on="Present" data-offstyle="warning"
+          data-off="Absent">
+      </a>
+    </div>
     {% endif %}
-  </a>
-  <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
-    <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="warning" data-on="Present" data-off="Absent">
-  </a>
+
+
+
+
+
+  {% endfor %}
+
 </div>
-
-{% else %}
-<div class="alert alert-secondary d-flex justify-content-between">
-  <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param=" class="text-decoration-none text-dark">
-    <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
-  </a>
-  <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
-    <input type="checkbox" data-toggle="toggle" data-onstyle="success" data-on="Present" data-offstyle="warning" data-off="Absent">
-  </a>
 </div>
-{% endif %}
-
-
-{% endfor %}
 {% endblock %}
 
 {% block javascripts %}
@@ -50,15 +64,15 @@
 
   function submitdate() {
     let date = document.getElementById('date').value;
-    console.log(date);
+
     window.location.href = url + ('&date=' + date);
-}
+  }
 
   function onClickBtn(obj) {
 
-    if((obj.closest('div')).classList.contains("alert-success")){
+    if ((obj.closest('div')).classList.contains("alert-success")) {
       (obj.closest('div')).classList.replace("alert-success", "alert-secondary");
-    }else{
+    } else {
 
       (obj.closest('div')).classList.add("alert-secondary");
       (obj.closest('div')).classList.replace("alert-secondary", "alert-success");

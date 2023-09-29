@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Parametres;
+use App\Form\UserFormType;
 use App\Repository\UserRepository;
 use App\Repository\ParametresRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,4 +60,41 @@ class CompteController extends AbstractController
 
         return $this->redirectToRoute('app_menu');
     }
+
+    /**
+     * @Route("/home/compte/edit/{id}", name="app_compte_edit")
+     */
+    public function app_compte_edit($id, UserRepository $userRepository, EntityManagerInterface $em, Request $request): Response
+    {
+        $user = $userRepository->findOneById($id);
+
+        $form = $this->createForm(UserFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('app_compte');
+        }
+
+        return $this->render('compte/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/home/compte/details/{id}", name="app_compte_details")
+     */
+    public function app_compte_details($id, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->findOneById($id);
+
+        return $this->render('compte/details.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    
 }

@@ -3,22 +3,26 @@
 {% block title %}Changer période{% endblock %}
 
 {% block body %}
-<div class="px-2 mt-2">
-    <h2 class="text-center">{{titre}}</h2>
-    {{form_start(form)}}
-    {{ form_widget(form.valeur)}}
-    <div class="d-grid gap-2">
-        <button class="btn btn-primary btn-block mt-2" type="submit">
-            Valider
-        </button>
-    </div>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
+        <div class="px-2 mt-2">
+            <h2 class="text-center">{{titre}}</h2>
+            {{form_start(form)}}
+            {{ form_widget(form.valeur)}}
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-block mt-2" type="submit">
+                    Valider
+                </button>
+            </div>
 
-    {{form_end(form)}}
+            {{form_end(form)}}
 
-    <!--recuperer le lien précedent-->
-    <input type="hidden" name="referer" value="{{app.request.headers.get('referer')}}"/>
-    <div class="d-grid gap-2">
-        <input type="button" value="Retour" onclick="history.back()" class="btn btn-secondary btn-block mt-2">
+            <!--recuperer le lien précedent-->
+            <input type="hidden" name="referer" value="{{app.request.headers.get('referer')}}" />
+            <div class="d-grid gap-2">
+                <input type="button" value="Retour" onclick="history.back()" class="btn btn-secondary btn-block mt-2">
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

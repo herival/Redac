@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Details comptes{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
+
+        <h1 class="text-center">Infos Techs</h1>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Email</label>
+            <input type="email" class="form-control" readonly value="{{user.email}}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Nom</label>
+            <input type="email" class="form-control" readonly value="{{user.nom}}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Prénom</label>
+            <input type="email" class="form-control" readonly value="{{user.prenom}}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Telephone</label>
+            <input type="email" class="form-control" readonly value="{{user.telephone}}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Date entrée</label>
+            <input type="email" class="form-control"  readonly value="{{user.createdAt|date("d/m/Y")}}">
+        </div>
+
+        <a type="button" href="{{path('app_compte_edit', {id:user.id})}}" class="btn btn-primary w-100 mt-1" title="Retour">Modifier</a>
+        <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1" title="Retour">Retour</a>
+    </div>
+</div>
+<div class="mb-footer"></div>
+{% endblock %}

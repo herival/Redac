@@ -3,11 +3,17 @@
 {% block title %}Techniciens{% endblock %}
 
 {% block body %}
-<h1 class="text-center">Techniciens</h1>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
 
-{% for tech in liste %}
-<div class="d-grid gap-2 px-2 mb-2">
-    <a href="#" class="btn btn-secondary">{{tech.nom}} {{tech.prenom}}</a>
+        <h1 class="text-center">Techniciens</h1>
+
+        {% for tech in liste %}
+        <div class="d-grid gap-2 px-2 mb-2">
+            <a href="{{path('app_compte_details', {id:tech.id})}}" class="btn btn-secondary">{{tech.nom}} {{tech.prenom}}</a>
+        </div>
+        {% endfor %}
+
+    </div>
 </div>
-{% endfor %}
 {% endblock %}
