@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Inter;
+use App\Form\InterType;
 use App\Form\InterFormType;
 use App\Repository\UserRepository;
+use App\Repository\InterRepository;
+use App\Repository\ParametresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Repository\InterRepository;
-use DateTime;
 
 class InterController extends AbstractController
 {
@@ -26,7 +28,7 @@ class InterController extends AbstractController
     }
 
     /**
-     * @Route("/home/inter/new", name="app_inter")
+     * @Route("/home/inter/new", name="app_inter_new")
      */
     public function new_inter(Request $request, EntityManagerInterface $em): Response
     {
@@ -45,11 +47,16 @@ class InterController extends AbstractController
         ]);
     }
     /**
-     * @Route("/home/inter/inter_du_jour/{date?}", name="inter_jour")
+     * @Route("/home/inter", name="inter_jour")
      */
-    public function inter_jour($date, UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em): Response
+    public function inter_jour(InterRepository $interRepository, EntityManagerInterface $em, Request $request) : Response
     {
+        $date = (new \DateTime('now'))->format('Y-m-d');
+        $date_post = $request->query->get('date');
 
+        if($date_post != null) {
+            $date = $date_post;
+        }
         $inter_jour = $interRepository->findByDate((new \DateTime($date))->format('Y-m-d'));
 
         return $this->render('inter/inter_jour.html.twig', [
@@ -63,7 +70,7 @@ class InterController extends AbstractController
      */
     public function modifier_inter($id, Request $request, EntityManagerInterface $em, InterRepository $interRepository): Response
     {    
-        $source_url = ($request->query->get('source')?$request->query->get('source'):'menu');
+        $source_url = ($request->query->get('source')?$request->query->get('source'):'app_menu');
         $source_param = $request->query->get('param');
         $backup = $request->query->get('backup');
 
@@ -89,7 +96,8 @@ class InterController extends AbstractController
             'id_inter' => $id, 
             'source' => $source_url,
             'source_param' => $source_param,
-            'backup' => $backup
+            'backup' => $backup,
+            'bouton' => 'Modifier'
         ]);
     }
 
@@ -114,5 +122,58 @@ class InterController extends AbstractController
             'message'  => 'etat presence ok', 
             200 
         ]);
+    }
+    /**
+     * @Route("/home/inter/insertion_mois", name="insertion_inter_mois",  methods={"GET"})
+     */
+    public function insertion_inter_mois(UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em, ParametresRepository $parametresRepository): Response
+    {
+        // recuperer toutes les dates entre startDate et $endDate
+        function getDatesFromRange($startDate, $endDate) {
+            $return = array($startDate);
+            $start = $startDate;
+            $i = 1;
+            if (strtotime($startDate) < strtotime($endDate)) {
+                while (strtotime($start) < strtotime($endDate)) {
+                    $start = date('Y-m-d', strtotime($startDate . '+' . $i . ' days'));
+                    $return[] = $start;
+                    $i++;
+                }
+            }
+        
+            return $return;
+        }
+        // recuperer les dates dans les paramètres de la bdd
+        $startdate = $parametresRepository->findOneByCle('startdate')->getValeur();
+        $enddate = $parametresRepository->findOneByCle('enddate')->getValeur();
+
+        $liste = getDatesFromRange($startdate, $enddate);
+
+        $techs = $userRepository->findByPoste('tech');
+
+        foreach ($liste as $key => $value) {
+
+            $date = (new \DateTime($value));
+
+            foreach ($techs as $key => $tech) {
+
+                $inter_encours = $interRepository->findByTechAndDate($tech, $date);
+                // dd($inter_encours);
+                if(!$inter_encours){
+                    $inter = new Inter; 
+        
+                    $inter->setDate($date);
+                    $inter->setTechnicien($tech);
+                    $inter->setSalaire(80);
+            
+                    $em->persist($inter);
+                    $em->flush(); 
+                }
+
+
+            }
+        }
+
+        return $this->redirectToRoute('app_menu');
     }
 }

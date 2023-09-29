@@ -70,8 +70,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $statut;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $poste;
+
     public function __construct()
     {
+        $this->poste = 'tech';
+        $this->statut = true;
         $this->inters = new ArrayCollection();
         $this->createdAt = new \DateTime;
 
@@ -252,6 +259,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStatut(?bool $statut): self
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getPoste(): ?string
+    {
+        return $this->poste;
+    }
+
+    public function setPoste(?string $poste): self
+    {
+        $this->poste = $poste;
 
         return $this;
     }

@@ -51,6 +51,19 @@ class InterRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
+    /**
+    * @return Inter[] Returns an array of Inter objects
+    */
+    public function findByTechAndDate($tech, $date): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.date = :date AND i.technicien = :tech')
+            ->setParameter('tech', $tech)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    /**
 //     * @return Inter[] Returns an array of Inter objects

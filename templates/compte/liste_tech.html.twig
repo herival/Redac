@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Techniciens{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Techniciens</h1>
+
+{% for tech in liste %}
+<div class="d-grid gap-2 px-2 mb-2">
+    <a href="#" class="btn btn-secondary">{{tech.nom}} {{tech.prenom}}</a>
+</div>
+{% endfor %}
+{% endblock %}

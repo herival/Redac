@@ -10,86 +10,74 @@
 </div>
 
 <div class="text-center mb-2">
-  <input type="date" id="date" name="date"  value="{{date_url}}" onchange="window.location=this.value">
+  <input type="date" id="date" name="date" value="{{date_url}}" onchange="submitdate()">
 </div>
 
-    {% for inter in inter_jour %}
-    {% if inter.presence == 1 %}
-    
-    <div class="alert alert-success d-flex justify-content-between">
-      <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param=" class="text-decoration-none text-dark">
-        <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
-        {% if inter.anomalie is not null %}
-        <i class="fas fa-exclamation-triangle text-danger"></i>
-        {% endif %}
-      </a>
-        <a href="{{ path ('presence', {id : inter.id} )}}" class="presence">
-            <input type="checkbox" checked data-toggle="toggle" data-onstyle="primary" data-on="Present" data-off="Absent">
-        </a>  
-    </div>
+{% for inter in inter_jour %}
+{% if inter.presence == 1 %}
 
-    {% else %}
-    <div class="alert alert-secondary d-flex justify-content-between">
-      <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param=" class="text-decoration-none text-dark">
-        <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
-      </a>
-        <a href="{{ path ('presence', {id : inter.id} )}}" class="presence">
-            <input type="checkbox" data-toggle="toggle" data-onstyle="primary"  data-on="Present" data-off="Absent">
-        </a>  
-    </div>
+<div class="alert alert-success d-flex justify-content-between">
+  <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param=" class="text-decoration-none text-dark">
+    <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
+    {% if inter.anomalie is not null %}
+    <i class="fas fa-exclamation-triangle text-danger"></i>
     {% endif %}
+  </a>
+  <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
+    <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="warning" data-on="Present" data-off="Absent">
+  </a>
+</div>
+
+{% else %}
+<div class="alert alert-secondary d-flex justify-content-between">
+  <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param=" class="text-decoration-none text-dark">
+    <span>{{ inter.technicien.nom}} {{ inter.technicien.prenom}} </span>
+  </a>
+  <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
+    <input type="checkbox" data-toggle="toggle" data-onstyle="success" data-on="Present" data-offstyle="warning" data-off="Absent">
+  </a>
+</div>
+{% endif %}
 
 
 {% endfor %}
-
-
 {% endblock %}
 
 {% block javascripts %}
-  <script src="{{ asset ('./assets/js/axios.min.js')}}"></script>
-  <script>
+<script>
+  const domain = window.location.origin;
+  let url = domain + "/home/inter?";
 
-    function addDate(event){
-      
-      let date = new Date(document.getElementById('date').value);
-      let datatoday = new Date(document.getElementById('date').value);
-      let datatodays = datatoday.setDate(new Date(datatoday).getDate() + 1);
-      todate = new Date(datatodays);
-      let month = todate.getMonth()+1;
-      let day = todate.getDate();
-      let year = todate.getFullYear();
-      let text = `${year}-${month}-${day}`
-      document.getElementById('date').value = text;
-      
-  
+  function submitdate() {
+    let date = document.getElementById('date').value;
+    console.log(date);
+    window.location.href = url + ('&date=' + date);
+}
+
+  function onClickBtn(obj) {
+
+    if((obj.closest('div')).classList.contains("alert-success")){
+      (obj.closest('div')).classList.replace("alert-success", "alert-secondary");
+    }else{
+
+      (obj.closest('div')).classList.add("alert-secondary");
+      (obj.closest('div')).classList.replace("alert-secondary", "alert-success");
+
     }
-    function onClickBtn(event){
-      alert('test');
-      event.preventDefault();
-      const Url = this.href;
-      const table_t3 = this.parentNode;
+    const url = obj.href;
+    fetch(url, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
+      .then(response => response.json())
+      .catch(e => {
+        console.log(e);
+      });
+
+  }
+
+</script>
 
 
-      axios.get(Url).then(function (response){
-        if(table_t3.classList.contains("alert-success")){
-          table_t3.classList.replace("alert-success", "alert-secondary");
-        }else{
-
-          table_t3.classList.add("alert-secondary");
-          table_t3.classList.replace("alert-secondary", "alert-success");
-
-        }
-
-      })
-    }
-
-    const presence = document.getElementsByClassName("presence");
-    console.log(presence);
-    for (let i in presence){
-      console.log(i);
-    }
-
-  </script>
-
-  
 {% endblock %}

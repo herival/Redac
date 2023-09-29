@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New inter{% endblock %}
+{% block title %}{{ bouton ? bouton : 'Créer'}}{% endblock %}
 
 {% block body %}
 <div class="row d-flex justify-content-center">
     <div class="col-md-3">
-        <h1>Nouvel utilisateur</h1>
+        <h1>{{ bouton ? bouton : 'Nouvel'}} utilisateur</h1>
 
         <div class="m-2">
             {{ form_start(form) }}
@@ -13,9 +13,9 @@
             {{ form_row(form.Anomalie) }}
             {{ form_row(form.Salaire) }}
             {{ form_row(form.technicien) }}    
-            <button type="submit" class="btn btn-primary w-100">Créer</button>
+            <button type="submit" class="btn btn-primary w-100">{{ bouton ? bouton : 'Créer'}}</button>
             {{ form_end(form) }}
-
+            <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
         </div>
 
     </div>
