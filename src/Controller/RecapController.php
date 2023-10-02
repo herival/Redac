@@ -18,7 +18,6 @@ class RecapController extends AbstractController
         $date_debut = new DateTime('2023-09-01');
         $date_fin = new DateTime('2023-09-30');
         $liste = $interRepository->findByGroupUser($date_debut, $date_fin);
-        dump($liste);
         return $this->render('recap/liste.html.twig', [
             'liste' => $liste,
         ]);

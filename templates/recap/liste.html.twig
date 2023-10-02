@@ -15,15 +15,26 @@
                 </tr>
             </thead>
             <tbody>
+                {% set total = 0 %}
+                {% set total_salaire = 0 %}
                 {% for tech in liste %}
                 <tr>
                     <td>{{tech[0].technicien.nom}} {{tech[0].technicien.prenom}}</td>
                     <td class="text-center">{{tech.nombre}}</td>
                     <td class="text-end">{{(tech.salaire)|number_format(0, ',', ' ')}}€</td>
                 </tr>
+                {% set total = total + tech.nombre %}
+                {% set total_salaire = total_salaire + tech.salaire %}
                 {% endfor %}
 
             </tbody>
+            <thead>
+                <tr>
+                <th scope="col">Total</th>
+                <th scope="col" class="text-center">{{total}}</th>
+                <th scope="col" class="text-end">{{total_salaire|number_format(0, ',', ' ')}}€</th>
+                </tr>
+            </thead>
         </table>
         <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
 
