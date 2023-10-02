@@ -48,9 +48,12 @@
     {% endif %}
 
 
-    {% endfor %}
 
-  </div>
+
+
+  {% endfor %}
+
+</div>
 </div>
 {% endblock %}
 
@@ -61,7 +64,7 @@
 
   function submitdate() {
     let date = document.getElementById('date').value;
-    console.log(date);
+
     window.location.href = url + ('&date=' + date);
   }
 

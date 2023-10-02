@@ -13,10 +13,14 @@
             {{ form_row(form.nom) }}
             {{ form_row(form.prenom) }}
             {{ form_row(form.telephone) }}
-            {{ form_row(form.statut, {
-                label : 'Statut du tech'
-            }) }}
+            
+            {{ form_row(form.client) }}
             {{ form_row(form.createdAt) }}
+            {{ form_row(form.basesalaire) }}
+            {{ form_row(form.statut, {
+                label : 'Actif'
+            }) }}
+
             <button type="submit" class="btn btn-primary w-100">Valider</button>
             {{ form_end(form) }}
             <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1" title="Retour">Retour</a>

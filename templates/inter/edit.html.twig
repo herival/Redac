@@ -15,6 +15,7 @@
             {{ form_row(form.technicien) }}    
             <button type="submit" class="btn btn-primary w-100">Modifier</button>
             {{ form_end(form) }}
+            <a href="{{path('suppression_inter', {id:id_inter})}}"  type="button" onclick="return confirm('Etes-vous sur de vouloir supprimer cette inter')" class="btn btn-warning w-100 mt-1"  title="Retour">Supprimer</a>
             <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
         </div>
 

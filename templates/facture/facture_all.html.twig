@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
+        <h1 class="text-center">Facture</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Technicien</th>
+                    <th scope="col">Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% for facture in facture_liste %}
+                <tr>
+                    <td> {{facture.nom}} {{facture.prenom}}</td>
+                    <td class="text-end">{{facture.nombre}}</td>
+                </tr>
+                {% set total = total + facture.nombre %}
+                {% endfor %}
+                <tr class="table-info">
+                    <td>Nombre interventions</td>
+                    <td class="text-end">{{total}}</td>
+                </tr>
+                <tr class="table-warning">
+                    <td>Montant</td>
+                    <td class="text-end">{{(total * 130)|number_format(0,',',' ')}} €</td>
+                </tr>
+                <tr class="table-secondary">
+                    <td>TVA 20%</td>
+                    <td class="text-end">{{((total * 130)* 20 / 100)|number_format(0,',',' ')}} €</td>
+                </tr>
+                <tr class="table-success">
+                    <td>Total à facturer</td>
+                    <td class="text-end">{{((total * 130) * 120 / 100)|number_format(0,',',' ')}} €</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{path('app_menu')}}" class="btn btn-secondary w-100 mt-1" title="Retour">Retour</a>
+
+    </div>
+</div>
+<div class="mb-footer"></div>
+{% endblock %}

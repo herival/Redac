@@ -9,9 +9,16 @@
         <h1 class="text-center">Techniciens</h1>
 
         {% for tech in liste %}
+        {% if tech.statut == true %}
+        <div class="d-grid gap-2 px-2 mb-2">
+            <a href="{{path('app_compte_details', {id:tech.id})}}" class="btn btn-primary">{{tech.nom}} {{tech.prenom}}</a>
+        </div>
+        {% else %}
         <div class="d-grid gap-2 px-2 mb-2">
             <a href="{{path('app_compte_details', {id:tech.id})}}" class="btn btn-secondary">{{tech.nom}} {{tech.prenom}}</a>
         </div>
+        {% endif %}
+
         {% endfor %}
 
     </div>

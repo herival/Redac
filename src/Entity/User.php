@@ -75,6 +75,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $poste;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $client;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $basesalaire;
+
     public function __construct()
     {
         $this->poste = 'tech';
@@ -271,6 +281,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPoste(?string $poste): self
     {
         $this->poste = $poste;
+
+        return $this;
+    }
+
+    public function getClient(): ?string
+    {
+        return $this->client;
+    }
+
+    public function setClient(string $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getBasesalaire(): ?int
+    {
+        return $this->basesalaire;
+    }
+
+    public function setBasesalaire(?int $basesalaire): self
+    {
+        $this->basesalaire = $basesalaire;
 
         return $this;
     }

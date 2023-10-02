@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recap{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
+        <h1 class="text-center">Recap periode</h1>
+        <hr>
+        {% if liste == null %}
+        <div class="alert alert-warning text-center">Aucune inter</div>
+        {% else %}
+        <a href="{{path('app_compte_details', {id:liste[0].technicien.id})}}" class="text-decoration-none text-dark"><h3 class="text-center">{{liste[0].technicien.nom}} {{liste[0].technicien.prenom}}</h3></a>
+        {% endif %}
+        <table class="table">
+            <thead>
+                <th scope="col">Date</th>
+                <th scope="col">Montant</th>
+                </tr>
+        <!--Convertion date-->
+          {% set trans_day_hash = { 
+            "Monday": "Lundi", 
+            "Tuesday": "Mardi", 
+            "Wednesday": "Mercredi", 
+            "Thursday": "Jeudi", 
+            "Friday": "Vendredi", 
+            "Saturday": "Samedi", 
+            "Sunday": "Dimanche" 
+        } 
+      %}
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% for inter in liste %}
+                <tr>
+                    <td> <a href="{{path('edit_inter', {id:inter.id})}}" class="text-decoration-none text-secondary">{{ trans_day_hash[inter.date|date('l')] }} {{inter.date|date('j-m-Y')}}</a> 
+                        {% if inter.anomalie is not null %}
+                        <i class="fas fa-exclamation-triangle text-danger"></i>
+                        {% endif %}</td>
+                    <td class="text-end">{{(inter.salaire)|number_format(0, ',', ' ')}}€</td>
+                </tr>
+                {% set total = total + inter.salaire %}
+                {% endfor %}
+                <tr class="table-info">
+                    <td>Total</td>
+                    <td class="text-end">{{total|number_format(0, ',',' ')}} €</td>
+                </tr>
+            </tbody>
+        </table>
+        <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
+
+
+    </div>
+</div>
+<div class="mb-footer"></div>
+{% endblock %}
