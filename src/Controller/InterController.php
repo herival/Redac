@@ -90,7 +90,7 @@ class InterController extends AbstractController
         $backup = $request->query->get('backup');
 
         $inter = $interRepository->findOneById($id);
-        $form = $this->createForm(InterType::class, $inter);
+        $form = $this->createForm(InterFormType::class, $inter);
 
         $form->handleRequest($request);
 
