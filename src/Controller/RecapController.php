@@ -31,6 +31,7 @@ class RecapController extends AbstractController
         $date_debut = new DateTime(($parametresRepository->findOneByCle('startdate'))->getValeur());
         $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
         $liste = $interRepository->findByGroupUser($date_debut, $date_fin);
+        // dd($liste, $date_debut, $date_fin);
         return $this->render('recap/liste.html.twig', [
             'liste' => $liste,
             'date_debut' => $date_debut,
