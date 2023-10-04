@@ -128,7 +128,7 @@ class InterRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-        /**
+    /**
      * @return Inter[] Returns an array of Inter objects
      */
     public function countInterAll($date_debut, $date_fin): array
@@ -143,6 +143,24 @@ class InterRepository extends ServiceEntityRepository
             ->setParameter('date_debut', $date_debut)
             ->setParameter('date_fin', $date_fin)
             ->groupBy('i.technicien')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Inter[] Returns an array of Inter objects
+     */
+    public function findCAperYear( $tech): array
+    {
+        return $this->createQueryBuilder('i')
+            ->addSelect('MONTH(i.date) AS mois, YEAR(i.date) AS annee, SUM(i.Salaire) salaire, count(i.Salaire) as qtte')
+            ->andWhere('i.presence = true')
+            ->andWhere('i.technicien = :tech')
+
+            // ->innerJoin('i.technicien', 'u')
+            // ->addSelect('u.id, u.nom, u.prenom')
+            ->setParameter('tech', $tech)
+            ->groupBy('annee, mois')
             ->getQuery()
             ->getResult();
     }

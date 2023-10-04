@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recap{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center">
+    <div class="col-md-3">
+        <h1>Recap tech</h1>
+        <hr>
+        <h5>{{tech.nom}} {{tech.prenom}}</h5>
+
+        <table class="table">
+            <thead>
+                <th scope="col">Periode</th>
+                <th scope="col" class="text-center">Nombre</th>
+                <th scope="col" class="text-end">Salaire</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% set total_salaire = 0 %}
+                {% for periode in liste %}
+                <tr>
+                    <td><a href="{{path('app_recap_user', {id:tech.id})}}?periode=01-{{periode.mois}}-{{periode.annee}}" class="text-decoration-none text-secondary">{{periode.mois}}-{{periode.annee}}</a></td>
+                    <td class="text-center">{{periode.qtte}}</td>
+                    <td class="text-end">{{periode.salaire|number_format(0, ',', ' ')}}€</td>
+                </tr>
+                {% set total = total + periode.qtte %}
+                {% set  total_salaire = total_salaire + periode.salaire %}
+                {% endfor %}
+
+            </tbody>
+            <thead>
+                <tr>
+                <th scope="col">Total</th>
+                <th scope="col" class="text-center">{{total}}</th>
+                <th scope="col" class="text-end">{{total_salaire|number_format(0, ',', ' ')}}€</th>
+                </tr>
+            </thead>
+        </table>
+        <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
+
+    </div>
+</div>
+<div class="mb-footer"></div>
+{% endblock %}
