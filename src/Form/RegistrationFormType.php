@@ -30,6 +30,7 @@ class RegistrationFormType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('telephone')
+            ->add('basesalaire')
             ->add('client', ChoiceType::class, [
                 'choices' => [
                     'B2A' => 'B2A',

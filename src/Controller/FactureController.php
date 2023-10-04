@@ -25,4 +25,20 @@ class FactureController extends AbstractController
             'client' => $client
         ]);
     }
+
+    /**
+     * @Route("/home/facture/", name="app_facture_all")
+     */
+    public function app_facture_all(InterRepository $interRepository, ParametresRepository $parametresRepository, UserRepository $userRepository): Response
+    {
+
+        $date_debut = ($parametresRepository->findOneByCle('startdate'))->getValeur();
+        $date_fin = ($parametresRepository->findOneByCle('enddate'))->getValeur();
+        $facture = $interRepository->countInterAll( $date_debut, $date_fin);
+
+
+        return $this->render('facture/facture_all.html.twig', [
+            'facture_liste' => $facture,
+        ]);
+    }
 }

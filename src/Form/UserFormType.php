@@ -23,6 +23,8 @@ class UserFormType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('telephone')
+            ->add('basesalaire')
+            ->add('statut')
             ->add('createdAt', DateType::class, [
                 'widget' => "single_text",
             ])

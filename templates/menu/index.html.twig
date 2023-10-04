@@ -38,12 +38,6 @@
         <div class="d-grid gap-2 px-2 mb-2">
           <a href="{{ path ('app_inter_new')}}" class="btn btn-primary">Nouvelle intervention</a>
         </div>
-        {# <div class="d-grid gap-2 px-2 mb-2">
-          <a href="{{ path ('date_setting', {date: 'startdate'})}}" class="btn btn-primary">Debut période</a>
-        </div>
-        <div class="d-grid gap-2 px-2 mb-2">
-          <a href="{{ path ('date_setting', {date: 'enddate'})}}" class="btn btn-primary">Fin période</a>
-        </div> #}
         <div class="d-grid gap-2 px-2 mb-2">
           <a href="{{ path ('change_periode')}}" class="btn btn-primary">Changer Période</a>
         </div>
@@ -53,6 +47,11 @@
         <div class="d-grid gap-2 px-2 mb-2">
           <a href="{{ path ('insertion_inter_mois')}}" class="btn btn-primary"
             onclick="return confirm('Etes-vous sûr de vouloir inserer les interventions de la période séléctionnée?')">Insertion
+            inter periode</a>
+        </div>
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('suppression_inter_mois')}}" class="btn btn-danger"
+            onclick="return confirm('Etes-vous sûr de vouloir supprimer les interventions de la période séléctionnée?')">Suppression
             inter periode</a>
         </div>
       </div>
@@ -65,6 +64,9 @@
     </p>
     <div class="collapse px-2" id="facturation">
       <div class="card card-body">
+        <div class="d-grid gap-2 px-2 mb-2">
+          <a href="{{ path ('app_facture_all')}}" class="btn btn-primary">Recap Factures</a>
+        </div>
         <div class="d-grid gap-2 px-2 mb-2">
           <a href="{{ path ('app_facture', {client: 'B2A'})}}" class="btn btn-primary">Factures B2A</a>
         </div>

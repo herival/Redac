@@ -5,28 +5,28 @@
 {% block body %}
 <div class="row d-flex justify-content-center">
     <div class="col-md-3">
-        <h1>Recap periode</h1>
+        <h1>Recap tech</h1>
         <hr>
-        <h5>Entre: {{date_debut|date('d-m-Y')}} et {{date_fin|date('d-m-Y')}} </h5>
+        <h5>{{tech.nom}} {{tech.prenom}}</h5>
 
         <table class="table">
             <thead>
-                <th scope="col">Tech</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Charges</th>
+                <th scope="col">Periode</th>
+                <th scope="col" class="text-center">Nombre</th>
+                <th scope="col" class="text-end">Salaire</th>
                 </tr>
             </thead>
             <tbody>
                 {% set total = 0 %}
                 {% set total_salaire = 0 %}
-                {% for tech in liste %}
+                {% for periode in liste %}
                 <tr>
-                    <td><a href="{{path('app_recap_user',{id:tech[0].technicien.id})}}" class="text-decoration-none text-secondary">{{tech[0].technicien.nom}} {{tech[0].technicien.prenom}}</a></td>
-                    <td class="text-center">{{tech.nombre}}</td>
-                    <td class="text-end">{{(tech.salaire)|number_format(0, ',', ' ')}}€</td>
+                    <td><a href="{{path('app_recap_user', {id:tech.id})}}?periode=01-{{periode.mois}}-{{periode.annee}}" class="text-decoration-none text-secondary">{{periode.mois}}-{{periode.annee}}</a></td>
+                    <td class="text-center">{{periode.qtte}}</td>
+                    <td class="text-end">{{periode.salaire|number_format(0, ',', ' ')}}€</td>
                 </tr>
-                {% set total = total + tech.nombre %}
-                {% set total_salaire = total_salaire + tech.salaire %}
+                {% set total = total + periode.qtte %}
+                {% set  total_salaire = total_salaire + periode.salaire %}
                 {% endfor %}
 
             </tbody>

@@ -60,6 +60,7 @@ class InterController extends AbstractController
      */
     public function inter_jour(InterRepository $interRepository, EntityManagerInterface $em, Request $request): Response
     {
+        $session = $this->requestStack->getSession();
         $date = (new \DateTime('now'))->format('Y-m-d');
         $date_post = $request->query->get('date');
 
@@ -67,6 +68,8 @@ class InterController extends AbstractController
             $date = $date_post;
         }
         $inter_jour = $interRepository->findByDate((new \DateTime($date))->format('Y-m-d'));
+        // session pour retour
+        $session->set('referer', $request->getUri());
 
         return $this->render('inter/inter_jour.html.twig', [
             "inter_jour" => $inter_jour,
@@ -87,7 +90,7 @@ class InterController extends AbstractController
         $backup = $request->query->get('backup');
 
         $inter = $interRepository->findOneById($id);
-        $form = $this->createForm(InterType::class, $inter);
+        $form = $this->createForm(InterFormType::class, $inter);
 
         $form->handleRequest($request);
 
@@ -112,6 +115,7 @@ class InterController extends AbstractController
             'bouton' => 'Modifier'
         ]);
     }
+
 
     /**
      * @Route("/home/inter/presence/{id}", name="presence")
@@ -156,28 +160,32 @@ class InterController extends AbstractController
 
             return $return;
         }
+
         // recuperer les dates dans les paramètres de la bdd
         $startdate = $parametresRepository->findOneByCle('startdate')->getValeur();
         $enddate = $parametresRepository->findOneByCle('enddate')->getValeur();
 
         $liste = getDatesFromRange($startdate, $enddate);
 
+
         $techs = $userRepository->findByPoste('tech');
 
         foreach ($liste as $key => $value) {
 
             $date = (new \DateTime($value));
+            // dd($date->format('l'));
+
 
             foreach ($techs as $key => $tech) {
 
                 $inter_encours = $interRepository->findByTechAndDate($tech, $date);
                 // dd($inter_encours);
-                if (!$inter_encours) {
+                if (!$inter_encours && ($date->format('l')) != 'Sunday') {
                     $inter = new Inter;
 
                     $inter->setDate($date);
                     $inter->setTechnicien($tech);
-                    $inter->setSalaire(80);
+                    $inter->setSalaire($tech->getBasesalaire());
 
                     $em->persist($inter);
                     $em->flush();
@@ -186,5 +194,45 @@ class InterController extends AbstractController
         }
 
         return $this->redirectToRoute('app_menu');
+    }
+
+    /**
+     * @Route("/home/inter/suppression_mois", name="suppression_inter_mois",  methods={"GET"})
+     */
+    public function suppression_inter_mois(UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em, ParametresRepository $parametresRepository): Response
+    {
+
+        // recuperer les dates dans les paramètres de la bdd
+        $startdate = $parametresRepository->findOneByCle('startdate')->getValeur();
+        $enddate = $parametresRepository->findOneByCle('enddate')->getValeur();
+
+        $liste = $interRepository->findInterBetweenDate($startdate, $enddate);
+        // dd($liste);
+
+        foreach ($liste as $key => $value) {
+            $em->remove($value);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_menu');
+    }
+
+    /**
+     * @Route("/home/inter/suppression_inter/{id}", name="suppression_inter",  methods={"GET"})
+     */
+    public function suppression_inter($id, UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em, ParametresRepository $parametresRepository): Response
+    {
+        $session = $this->requestStack->getSession();
+        
+        $inter = $interRepository->findOneById($id);
+        $em->remove($inter);
+        $em->flush();
+
+        //redirection
+        $referer = $session->get('referer');
+        if ($referer == null) {
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->redirect($referer);
     }
 }

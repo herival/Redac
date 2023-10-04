@@ -94,6 +94,20 @@ class InterRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return Inter[] Returns an array of Inter objects
+     */
+    public function findInterBetweenDate($date_debut, $date_fin): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.date BETWEEN :date_debut AND :date_fin')
+            ->andWhere('i.presence is null OR i.presence = false')
+            ->setParameter('date_debut', $date_debut)
+            ->setParameter('date_fin', $date_fin)
+            ->getQuery()
+            ->getResult();
+    }
     /**
      * @return Inter[] Returns an array of Inter objects
      */
@@ -110,6 +124,43 @@ class InterRepository extends ServiceEntityRepository
             ->setParameter('date_fin', $date_fin)
             ->setParameter('client', $client)
             ->groupBy('i.technicien')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Inter[] Returns an array of Inter objects
+     */
+    public function countInterAll($date_debut, $date_fin): array
+    {
+        return $this->createQueryBuilder('i')
+            ->select('count(i.technicien) as nombre')
+            ->innerJoin('i.technicien', 'u')
+            ->addSelect('u.id, u.nom, u.prenom')
+            ->andWhere('i.date BETWEEN :date_debut AND :date_fin')
+            ->andWhere("u.client != 'AUTRE'")
+            ->andWhere('i.presence = true')
+            ->setParameter('date_debut', $date_debut)
+            ->setParameter('date_fin', $date_fin)
+            ->groupBy('i.technicien')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Inter[] Returns an array of Inter objects
+     */
+    public function findCAperYear( $tech): array
+    {
+        return $this->createQueryBuilder('i')
+            ->addSelect('MONTH(i.date) AS mois, YEAR(i.date) AS annee, SUM(i.Salaire) salaire, count(i.Salaire) as qtte')
+            ->andWhere('i.presence = true')
+            ->andWhere('i.technicien = :tech')
+
+            // ->innerJoin('i.technicien', 'u')
+            // ->addSelect('u.id, u.nom, u.prenom')
+            ->setParameter('tech', $tech)
+            ->groupBy('annee, mois')
             ->getQuery()
             ->getResult();
     }

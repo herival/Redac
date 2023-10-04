@@ -12,15 +12,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CompteController extends AbstractController
 {
+    private $requestStack;
+
+    /**
+     * Constructor
+     */
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
     /**
      * @Route("/home/compte", name="app_compte")
      */
     public function index(UserRepository $userRepository): Response
     {
-        $liste = $userRepository->findByposte('tech');
+        $liste = $userRepository->findAll();
         return $this->render('compte/liste_tech.html.twig', [
             "liste" => $liste
         ]);
@@ -56,7 +66,7 @@ class CompteController extends AbstractController
         $em->persist($enddate);
         $em->persist($periode);
         $em->flush();
-        
+
 
         return $this->redirectToRoute('app_menu');
     }
@@ -87,14 +97,15 @@ class CompteController extends AbstractController
     /**
      * @Route("/home/compte/details/{id}", name="app_compte_details")
      */
-    public function app_compte_details($id, UserRepository $userRepository): Response
+    public function app_compte_details($id, UserRepository $userRepository, Request $request): Response
     {
+        $session = $this->requestStack->getSession();
         $user = $userRepository->findOneById($id);
 
+        // session pour retour
+        $session->set('referer', $request->getUri());
         return $this->render('compte/details.html.twig', [
             'user' => $user,
         ]);
     }
-
-    
 }

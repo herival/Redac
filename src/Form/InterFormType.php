@@ -33,11 +33,9 @@ class InterFormType extends AbstractType
             ])
             ->add('technicien', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'nom',
-                'query_builder' => function(UserRepository $userRepository) {
-                    return $userRepository->createQueryBuilder('r')
-                        ->andWhere('r.statut = 1');
-                },
+                'choice_label' => function(User $user){
+                    return $user->getNom() .' '. $user->getPrenom();
+                }
             ])
         ;
     }
