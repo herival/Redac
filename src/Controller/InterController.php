@@ -223,7 +223,7 @@ class InterController extends AbstractController
     public function suppression_inter($id, UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em, ParametresRepository $parametresRepository): Response
     {
         $session = $this->requestStack->getSession();
-        
+
         $inter = $interRepository->findOneById($id);
         $em->remove($inter);
         $em->flush();
@@ -234,5 +234,52 @@ class InterController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
         return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/home/inter_periode/tech/{id}", name="inter_periode_tech")
+     */
+    public function inter_periode_tech(
+        $id,
+        UserRepository $userRepository,
+        InterRepository $interRepository,
+        ParametresRepository $parametresRepository,
+        Request $request
+    ): Response {
+
+        $session = $this->requestStack->getSession();
+        $tech = $userRepository->findOneById($id);
+        $mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        $date_debut = new DateTime(($parametresRepository->findOneByCle('startdate'))->getValeur());
+        $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
+        $periode = (new \DateTime('now'))->format('m');
+
+        $periode_param = $request->query->get('mois');
+        if (isset($periode_param) && $periode_param != null){
+            $periode = $periode_param;
+        }
+
+
+        $annee = (new DateTime("now"))->format('Y');
+
+        if (isset($periode)) {
+            $periode_date_debut = new DateTime($annee . '-' . $periode);
+            $periode_date_fin = new DateTime($annee . '-' . $periode);
+            $date_debut  = $periode_date_debut->modify('first day of this month');
+            $date_fin  = $periode_date_fin->modify('last day of this month');
+        }
+
+        $inter_list = $interRepository->findInterByTechPeriod($id, $date_debut, $date_fin);
+        // session pour retour
+        $session->set('referer', $request->getUri());
+
+        return $this->render('inter/inter_tech.html.twig', [
+            "inter_list" => $inter_list,
+            "date_debut" => $date_debut->format('d-m-Y'),
+            "date_fin" => $date_fin->format('d-m-Y'),
+            "tech" => $tech,
+            "mois_list" => $mois,
+            "periode" => $periode
+        ]);
     }
 }

@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inter Periode{% endblock %}
+
+{% block body %}
+    <!--Convertion date-->
+    {% set trans_day_hash = {
+      "Monday": "Lundi",
+      "Tuesday": "Mardi",
+      "Wednesday": "Mercredi",
+      "Thursday": "Jeudi",
+      "Friday": "Vendredi",
+      "Saturday": "Samedi",
+      "Sunday": "Dimanche"
+      }
+      %}
+<div class="row d-flex justify-content-center">
+  <div class="col-md-3">
+
+
+    <div class="text-center mt-1">
+
+      <h1>Inters Periode</h1>
+      <h5><a href="{{path('app_compte')}}"class="text-decoration-none text-dark">{{tech.nom}} {{tech.prenom}}</a></h5>
+      <hr>
+      <div class="text-center mb-2">
+        <select class="form-select" id="mois" aria-label="Mois" onchange="submitPeriod()">
+          {% for mois in mois_list %}
+          <option {{ loop.index == periode ? 'selected' : '' }} value="{{loop.index}}">{{mois}}</option>            
+          {% endfor %}
+        </select>
+
+
+
+        </select>
+      </div>
+      <h5>Entre : <span class="text-primary">{{date_debut}}</span> et  <span class="text-primary">{{date_fin}}</span></h5>
+
+    </div>
+
+    {% for inter in inter_list %}
+    {% if inter.presence == 1 %}
+
+    <div class="alert alert-success d-flex justify-content-between">
+      <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param="
+        class="text-decoration-none text-dark">
+        <span>{{trans_day_hash[inter.date|date('l')] }} {{ inter.date|date('d-m-Y')}} </span>
+        {% if inter.anomalie is not null %}
+        <i class="fas fa-exclamation-triangle text-danger"></i>
+        {% endif %}
+      </a>
+      <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
+        <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-offstyle="warning"
+          data-on="Present" data-off="Absent">
+      </a>
+    </div>
+
+    {% else %}
+    <div class="alert alert-secondary d-flex justify-content-between">
+      <a href="{{ path ('edit_inter', {id: inter.id})}}?source=inter_jour&param="
+        class="text-decoration-none text-dark">
+        <span>{{trans_day_hash[inter.date|date('l')] }} {{ inter.date|date('d-m-Y')}} </span>
+      </a>
+      <a href="{{ path ('presence', {id : inter.id} )}}" class="presence" onclick="onClickBtn(this)">
+        <input type="checkbox" data-toggle="toggle" data-onstyle="success" data-on="Present" data-offstyle="warning"
+          data-off="Absent">
+      </a>
+    </div>
+    {% endif %}
+
+
+
+
+    {% endfor %}
+    <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
+
+  </div>
+</div>
+<div class="mb-footer"></div>
+<div id="path" data-path="{{path('inter_periode_tech', {id:tech.id})}}"></div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+  let path, url
+  const domain = window.location.origin;
+  window.onload = () => {
+    path = (document.getElementById('path'));
+    url = domain + path.dataset.path + "?";
+  }
+  function submitPeriod() {
+    let mois = document.getElementById('mois');
+    let mois_select = mois.options[mois.selectedIndex].value;
+
+    window.location.href = url + ('&mois=' + mois_select);
+  }
+
+  function onClickBtn(obj) {
+
+    if ((obj.closest('div')).classList.contains("alert-success")) {
+      (obj.closest('div')).classList.replace("alert-success", "alert-secondary");
+    } else {
+
+      (obj.closest('div')).classList.add("alert-secondary");
+      (obj.closest('div')).classList.replace("alert-secondary", "alert-success");
+
+    }
+    const url = obj.href;
+    fetch(url, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
+      .then(response => response.json())
+      .catch(e => {
+        console.log(e);
+      });
+
+  }
+
+</script>
+
+
+{% endblock %}

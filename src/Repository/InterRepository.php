@@ -164,6 +164,22 @@ class InterRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+        /**
+     * @return Inter[] Returns an array of Inter objects
+     */
+    public function findInterByTechPeriod($tech, $date_debut, $date_fin): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.date BETWEEN :date_debut AND :date_fin')
+            ->andWhere('i.technicien = :tech')
+            ->setParameter('date_debut', $date_debut)
+            ->setParameter('date_fin', $date_fin)
+            ->setParameter('tech', $tech)
+            ->orderBy('i.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Inter[] Returns an array of Inter objects
     //     */

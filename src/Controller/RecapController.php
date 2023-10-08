@@ -51,11 +51,12 @@ class RecapController extends AbstractController
         $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
         
         $periode = $request->query->get('periode');
-        dd($periode);
-        if($periode){
-            $date = new DateTime($periode);
-            $date_debut  = $date->modify('first day of this month')->format('Y-m-d');
-            $date_fin  = $date->modify('last day of this month')->format('Y-m-d');
+
+        if(isset($periode) && $periode != null){
+            $periode_date_debut = new DateTime($periode);
+            $periode_date_fin = new DateTime($periode);
+            $date_debut  = $periode_date_debut->modify('first day of this month');
+            $date_fin  = $periode_date_fin->modify('last day of this month');
         }
 
         $liste = $interRepository->findInterByUser($id, $date_debut, $date_fin);
@@ -66,8 +67,8 @@ class RecapController extends AbstractController
 
         return $this->render('recap/details.html.twig', [
             'liste' => $liste,
-            'date_debut' => $date_debut,
-            'date_fin' => $date_fin,
+            'date_debut' => $date_debut->format('d-m-Y'),
+            'date_fin' => $date_fin->format('d-m-Y'),
         ]);
     }
 
