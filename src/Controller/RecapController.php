@@ -22,39 +22,80 @@ class RecapController extends AbstractController
     public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
-
     }
     /**
      * @Route("/home/recap", name="app_recap")
      */
-    public function index(InterRepository $interRepository, ParametresRepository $parametresRepository): Response
-    {
+    public function index(
+        InterRepository $interRepository,
+        ParametresRepository $parametresRepository,
+        Request $request
+    ): Response {
+
+        $mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         $date_debut = new DateTime(($parametresRepository->findOneByCle('startdate'))->getValeur());
         $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
+
+        $periode = (new \DateTime('now'))->format('m');
+        $annee = (new DateTime("now"))->format('Y');
+
+        $periode_param = $request->query->get('mois');
+        if (isset($periode_param) && $periode_param != null) {
+            $periode = $periode_param;
+        }
+
+        $date_debut = new DateTime(($parametresRepository->findOneByCle('startdate'))->getValeur());
+        $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
+
+        if (isset($periode)) {
+            $periode_date_debut = new DateTime($annee . '-' . $periode);
+            $periode_date_fin = new DateTime($annee . '-' . $periode);
+            $date_debut  = $periode_date_debut->modify('first day of this month');
+            $date_fin  = $periode_date_fin->modify('last day of this month');
+        }
+
         $liste = $interRepository->findByGroupUser($date_debut, $date_fin);
         // dd($liste, $date_debut, $date_fin);
         return $this->render('recap/liste.html.twig', [
             'liste' => $liste,
             'date_debut' => $date_debut,
             'date_fin' => $date_fin,
+            'periode' => $periode,
+            'mois_list' => $mois
         ]);
     }
 
     /**
      * @Route("/home/recap_user/{id}", name="app_recap_user")
      */
-    public function app_recap_user($id, InterRepository $interRepository, ParametresRepository $parametresRepository, Request $request): Response
-    {
+    public function app_recap_user(
+        $id,
+        InterRepository $interRepository,
+        ParametresRepository $parametresRepository,
+        Request $request,
+        UserRepository $userRepository
+    ): Response {
         $session = $this->requestStack->getSession();
+        $mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
+        $tech = $userRepository->findOneById($id);
+        $tech_list = $userRepository->findBy(['statut' => true],['prenom' => 'ASC']);
         $date_debut = new DateTime(($parametresRepository->findOneByCle('startdate'))->getValeur());
         $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
-        
-        $periode = $request->query->get('periode');
 
-        if(isset($periode) && $periode != null){
-            $periode_date_debut = new DateTime($periode);
-            $periode_date_fin = new DateTime($periode);
+        $periode = (new \DateTime('now'))->format('m');
+
+        $annee = (new DateTime("now"))->format('Y');
+
+        $periode_param = $request->query->get('mois');
+
+        if (isset($periode_param) && $periode_param != null) {
+            $periode = $periode_param;
+        }
+ 
+        if (isset($periode) && $periode != null) {
+            $periode_date_debut = new DateTime($annee . '-' . $periode);
+            $periode_date_fin = new DateTime($annee . '-' . $periode);
             $date_debut  = $periode_date_debut->modify('first day of this month');
             $date_fin  = $periode_date_fin->modify('last day of this month');
         }
@@ -69,6 +110,10 @@ class RecapController extends AbstractController
             'liste' => $liste,
             'date_debut' => $date_debut->format('d-m-Y'),
             'date_fin' => $date_fin->format('d-m-Y'),
+            'mois_list' => $mois,
+            'periode' => $periode,
+            'tech' => $tech,
+            'tech_list' => $tech_list
         ]);
     }
 

@@ -250,15 +250,16 @@ class InterController extends AbstractController
         $session = $this->requestStack->getSession();
         $tech = $userRepository->findOneById($id);
         $mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+       
         $date_debut = new DateTime(($parametresRepository->findOneByCle('startdate'))->getValeur());
         $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
         $periode = (new \DateTime('now'))->format('m');
 
         $periode_param = $request->query->get('mois');
+        
         if (isset($periode_param) && $periode_param != null){
             $periode = $periode_param;
         }
-
 
         $annee = (new DateTime("now"))->format('Y');
 

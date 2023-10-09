@@ -6,8 +6,15 @@
 <div class="row d-flex justify-content-center">
     <div class="col-md-3">
         <h1>Recap periode</h1>
-        <hr>
         <h5>Entre: {{date_debut|date('d-m-Y')}} et {{date_fin|date('d-m-Y')}} </h5>
+        <hr>
+        <div class="text-center mb-2">
+            <select class="form-select" id="mois" aria-label="Mois" onchange="submitPeriod()">
+              {% for mois in mois_list %}
+              <option {{ loop.index == periode ? 'selected' : '' }} value="{{loop.index}}">{{mois}}</option>            
+              {% endfor %}
+            </select>
+          </div>
 
         <table class="table">
             <thead>
@@ -21,7 +28,7 @@
                 {% set total_salaire = 0 %}
                 {% for tech in liste %}
                 <tr>
-                    <td><a href="{{path('app_recap_user',{id:tech[0].technicien.id})}}" class="text-decoration-none text-secondary">{{tech[0].technicien.nom}} {{tech[0].technicien.prenom}}</a></td>
+                    <td><a href="{{path('app_recap_user',{id:tech[0].technicien.id})}}?periode={{periode}}" class="text-decoration-none text-secondary">{{tech[0].technicien.nom}} {{tech[0].technicien.prenom}}</a></td>
                     <td class="text-center">{{tech.nombre}}</td>
                     <td class="text-end">{{(tech.salaire)|number_format(0, ',', ' ')}}€</td>
                 </tr>
@@ -43,4 +50,10 @@
     </div>
 </div>
 <div class="mb-footer"></div>
+<div id="path" data-path="{{path('app_recap')}}"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset ('assets/js/other.js')}}"></script>
 {% endblock %}
