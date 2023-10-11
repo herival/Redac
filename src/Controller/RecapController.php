@@ -87,7 +87,7 @@ class RecapController extends AbstractController
 
         $annee = (new DateTime("now"))->format('Y');
 
-        $periode_param = $request->query->get('mois');
+        $periode_param = $request->query->get('periode');
 
         if (isset($periode_param) && $periode_param != null) {
             $periode = $periode_param;

@@ -7,11 +7,20 @@
     <div class="col-md-3">
         <h1 class="text-center">Facture {{client}}</h1>
         <hr>
-        <hr>
+        <div class="dropdown mb-1">
+            <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                {{client}}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="{{path('app_facture', {client:'B2A'})}}">B2A</a></li>
+                <li><a class="dropdown-item" href="{{path('app_facture', {client:'Help1fo'})}}">Help1fo</a></li>
+                <li><a class="dropdown-item" href="{{path('app_facture', {client:'Autres'})}}">Autres</a></li>
+            </ul>
+        </div>
         <div class="text-center mb-2">
             <select class="form-select" id="mois" aria-label="Mois" onchange="submitPeriod()">
                 {% for mois in mois_list %}
-                <option {{ loop.index==periode ? 'selected' : '' }} value="{{loop.index}}">{{mois}}</option>
+                <option {{ loop.index == periode ? 'selected' : '' }} value="{{loop.index}}">{{mois}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -54,6 +63,7 @@
     </div>
 </div>
 <div class="mb-footer"></div>
+<div id="path" data-path="{{path('app_facture', {client:client})}}"></div>
 {% endblock %}
 
 {% block javascripts %}

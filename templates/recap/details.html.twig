@@ -18,7 +18,7 @@
                     
                 {% endfor %}
             </ul>
-          </div>
+        </div>
         <div class="text-center mb-2">
             <select class="form-select" id="mois" aria-label="Mois" onchange="submitPeriod()">
               {% for mois in mois_list %}
@@ -61,12 +61,13 @@
                 {% set total = total + inter.salaire %}
                 {% endfor %}
                 <tr class="table-info">
-                    <td>Total</td>
+                    <td>Total salaire (nbre : {{liste|length}})</td>
                     <td class="text-end">{{total|number_format(0, ',',' ')}} €</td>
                 </tr>
             </tbody>
         </table>
         <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1" title="Retour">Retour</a>
+        <a type="button" href="{{path('inter_periode_tech', {id:tech.id})}}?mois={{periode}}" class="btn btn-success w-100 mt-1" title="Retour">Editer</a>
 
 
     </div>
