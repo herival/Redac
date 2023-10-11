@@ -14,6 +14,14 @@
                 {% endfor %}
             </select>
         </div>
+        <div>
+            {% set periode_encaissement = periode + 2 %}
+            {% if periode_encaissement > 12 %}
+            {% set periode_encaissement = periode_encaissement - 12 %}
+                
+            {% endif %}
+            <p class="alert alert-success text-center">Encaissement : {{mois_list[(periode_encaissement-1)] }} </p>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -45,6 +53,14 @@
                 <tr class="table-success">
                     <td>Total à facturer</td>
                     <td class="text-end">{{((total * 130) * 120 / 100)|number_format(0,',',' ')}} €</td>
+                </tr>
+                <tr class="table-danger">
+                    <td><a href="{{path('app_recap')}}?mois={{periode_charge}}" class="text-decoration-none text-dark">Salaire periode ({{mois_list[(periode_charge - 1)]}} {{annee_charge}}) :</a></td>
+                    <td class="text-end">{{(total_salaire)|number_format(0,',',' ')}} €</td>
+                </tr>
+                <tr class="table-primary">
+                    <td>Résultat période : </td>
+                    <td class="text-end">{{((total * 130) - total_salaire)|number_format(0,',',' ')}} €</td>
                 </tr>
             </tbody>
         </table>

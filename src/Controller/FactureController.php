@@ -49,21 +49,45 @@ class FactureController extends AbstractController
         if (isset($periode_param) && $periode_param != null) {
             $periode = $periode_param;
         }
-        
         $annee = (new DateTime("now"))->format('Y');
+        $annee_charge = (new DateTime("now"))->format('Y');
+
+        $periode_charge = $periode + 1;
+        if($periode_charge > 12){
+            $periode_charge = $periode_charge - 12;
+            $annee_charge = $annee + 1;
+        }
+        
         
         if (isset($periode)) {
             $periode_date_debut = new DateTime($annee . '-' . $periode);
             $periode_date_fin = new DateTime($annee . '-' . $periode);
             $date_debut  = $periode_date_debut->modify('first day of this month');
             $date_fin  = $periode_date_fin->modify('last day of this month');
+
+            // periode charge 
+            $periode_charge_date_debut = new DateTime($annee_charge . '-' . $periode_charge);
+            $periode_charge_date_fin = new DateTime($annee_charge . '-' . $periode_charge);
+            $date_charge_debut  = $periode_charge_date_debut->modify('first day of this month');
+            $date_charge_fin  = $periode_charge_date_fin->modify('last day of this month');
         }
         $facture = $interRepository->countInterAll($date_debut, $date_fin);
-        
+
+
+        $liste = $interRepository->findByGroupUser($date_charge_debut, $date_charge_fin);
+        $total_salaire = 0;
+        foreach($liste as $value){
+            $total_salaire += $value['salaire'];
+        }
+        // dd($date_charge_debut, $date_charge_fin);
         return $this->render('facture/facture_all.html.twig', [
             'facture_liste' => $facture,
             "mois_list" => $mois,
-            "periode" => $periode
+            "periode" => $periode, 
+            "total_salaire" => $total_salaire, 
+            "periode_charge" => $periode_charge, 
+            "annee_charge" => $annee_charge, 
+
         ]);
     }
 }
