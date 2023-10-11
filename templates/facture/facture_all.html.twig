@@ -5,7 +5,15 @@
 {% block body %}
 <div class="row d-flex justify-content-center">
     <div class="col-md-3">
-        <h1 class="text-center">Facture</h1>
+        <h1 class="text-center">Toutes les Factures</h1>
+        <hr>
+        <div class="text-center mb-2">
+            <select class="form-select" id="mois" aria-label="Mois" onchange="submitPeriod()">
+                {% for mois in mois_list %}
+                <option {{ loop.index == periode ? 'selected' : '' }} value="{{loop.index}}">{{mois}}</option>
+                {% endfor %}
+            </select>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -45,4 +53,10 @@
     </div>
 </div>
 <div class="mb-footer"></div>
+<div id="path" data-path="{{path('app_facture_all')}}"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset ('assets/js/other.js')}}"></script>
 {% endblock %}

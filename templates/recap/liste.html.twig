@@ -10,11 +10,11 @@
         <hr>
         <div class="text-center mb-2">
             <select class="form-select" id="mois" aria-label="Mois" onchange="submitPeriod()">
-              {% for mois in mois_list %}
-              <option {{ loop.index == periode ? 'selected' : '' }} value="{{loop.index}}">{{mois}}</option>            
-              {% endfor %}
+                {% for mois in mois_list %}
+                <option {{ loop.index==periode ? 'selected' : '' }} value="{{loop.index}}">{{mois}}</option>
+                {% endfor %}
             </select>
-          </div>
+        </div>
 
         <table class="table">
             <thead>
@@ -28,7 +28,9 @@
                 {% set total_salaire = 0 %}
                 {% for tech in liste %}
                 <tr>
-                    <td><a href="{{path('app_recap_user',{id:tech[0].technicien.id})}}?periode={{periode}}" class="text-decoration-none text-secondary">{{tech[0].technicien.nom}} {{tech[0].technicien.prenom}}</a></td>
+                    <td><a href="{{path('app_recap_user',{id:tech[0].technicien.id})}}?periode={{periode}}"
+                            class="text-decoration-none text-secondary">{{tech[0].technicien.nom}}
+                            {{tech[0].technicien.prenom}}</a></td>
                     <td class="text-center">{{tech.nombre}}</td>
                     <td class="text-end">{{(tech.salaire)|number_format(0, ',', ' ')}}€</td>
                 </tr>
@@ -39,13 +41,13 @@
             </tbody>
             <thead>
                 <tr>
-                <th scope="col">Total</th>
-                <th scope="col" class="text-center">{{total}}</th>
-                <th scope="col" class="text-end">{{total_salaire|number_format(0, ',', ' ')}}€</th>
+                    <th scope="col">Total</th>
+                    <th scope="col" class="text-center">{{total}}</th>
+                    <th scope="col" class="text-end">{{total_salaire|number_format(0, ',', ' ')}}€</th>
                 </tr>
             </thead>
         </table>
-        <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1"  title="Retour">Retour</a>
+        <a type="button" onclick="history.go(-1)" class="btn btn-secondary w-100 mt-1" title="Retour">Retour</a>
 
     </div>
 </div>
