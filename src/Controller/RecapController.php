@@ -87,7 +87,7 @@ class RecapController extends AbstractController
 
         $annee = (new DateTime("now"))->format('Y');
 
-        $periode_param = $request->query->get('periode');
+        $periode_param = $request->query->get('mois');
 
         if (isset($periode_param) && $periode_param != null) {
             $periode = $periode_param;
@@ -101,6 +101,7 @@ class RecapController extends AbstractController
         }
 
         $liste = $interRepository->findInterByUser($id, $date_debut, $date_fin);
+        // dd($liste);
 
         // session pour retour
         $session->set('referer', $request->getUri());
