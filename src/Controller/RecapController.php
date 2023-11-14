@@ -14,6 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecapController extends AbstractController
 {
+    /**
+     * @Route("/admin/recap")
+     */
     private $requestStack;
 
     /**
@@ -24,7 +27,7 @@ class RecapController extends AbstractController
         $this->requestStack = $requestStack;
     }
     /**
-     * @Route("/home/recap", name="app_recap")
+     * @Route("/", name="app_recap")
      */
     public function index(
         InterRepository $interRepository,
@@ -66,7 +69,7 @@ class RecapController extends AbstractController
     }
 
     /**
-     * @Route("/home/recap_user/{id}", name="app_recap_user")
+     * @Route("/recap_user/{id}", name="app_recap_user")
      */
     public function app_recap_user(
         $id,
@@ -79,7 +82,7 @@ class RecapController extends AbstractController
         $mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
         $tech = $userRepository->findOneById($id);
-        $tech_list = $userRepository->findBy(['statut' => true],['prenom' => 'ASC']);
+        $tech_list = $userRepository->findBy(['statut' => true], ['prenom' => 'ASC']);
         $date_debut = new DateTime(($parametresRepository->findOneByCle('startdate'))->getValeur());
         $date_fin = new DateTime(($parametresRepository->findOneByCle('enddate'))->getValeur());
 
@@ -92,7 +95,7 @@ class RecapController extends AbstractController
         if (isset($periode_param) && $periode_param != null) {
             $periode = $periode_param;
         }
- 
+
         if (isset($periode) && $periode != null) {
             $periode_date_debut = new DateTime($annee . '-' . $periode);
             $periode_date_fin = new DateTime($annee . '-' . $periode);
@@ -119,7 +122,7 @@ class RecapController extends AbstractController
     }
 
     /**
-     * @Route("/home/recap_user_all/{id}", name="app_recap_user_all")
+     * @Route("/recap_user_all/{id}", name="app_recap_user_all")
      */
     public function app_recap_user_all($id, InterRepository $interRepository, UserRepository $userRepository, ParametresRepository $parametresRepository, Request $request): Response
     {

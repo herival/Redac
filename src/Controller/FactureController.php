@@ -11,10 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/admin/facture")
+ */
 class FactureController extends AbstractController
 {
     /**
-     * @Route("/home/facture/{client}", name="app_facture")
+     * @Route("/client/{client}", name="app_facture")
      */
     public function index($client, 
     InterRepository $interRepository, 
@@ -51,7 +54,7 @@ class FactureController extends AbstractController
     }
 
     /**
-     * @Route("/home/facture/", name="app_facture_all")
+     * @Route("/", name="app_facture_all")
      */
     public function app_facture_all(
         InterRepository $interRepository,

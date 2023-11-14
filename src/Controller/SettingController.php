@@ -10,10 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/admin/setting")
+ */
 class SettingController extends AbstractController
 {
     /**
-     * @Route("/setting", name="app_setting")
+     * @Route("/", name="app_setting")
      */
     public function index(): Response
     {
@@ -23,7 +26,7 @@ class SettingController extends AbstractController
     }
 
      /**
-     * @Route("/home/change_periode", name="change_periode")
+     * @Route("/change_periode", name="change_periode")
      */
     public function change_periode(ParametresRepository $parametresRepository, Request $request, EntityManagerInterface $em): Response
     {

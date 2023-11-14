@@ -16,6 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @Route("/admin/inter")
+ */
 class InterController extends AbstractController
 {
     private $requestStack;
@@ -26,18 +29,9 @@ class InterController extends AbstractController
     {
         $this->requestStack = $requestStack;
     }
-    /**
-     * @Route("/inter", name="app_inter")
-     */
-    public function index(): Response
-    {
-        return $this->render('inter/index.html.twig', [
-            'controller_name' => 'InterController',
-        ]);
-    }
 
     /**
-     * @Route("/home/inter/new", name="app_inter_new")
+     * @Route("/new", name="app_inter_new")
      */
     public function new_inter(Request $request, EntityManagerInterface $em): Response
     {
@@ -56,7 +50,7 @@ class InterController extends AbstractController
         ]);
     }
     /**
-     * @Route("/home/inter", name="inter_jour")
+     * @Route("/", name="inter_jour")
      */
     public function inter_jour(InterRepository $interRepository, EntityManagerInterface $em, Request $request): Response
     {
@@ -78,7 +72,7 @@ class InterController extends AbstractController
     }
 
     /**
-     * @Route("/home/inter/edit/{id}", name="edit_inter")
+     * @Route("/edit/{id}", name="edit_inter")
      */
     public function modifier_inter($id, Request $request, EntityManagerInterface $em, InterRepository $interRepository): Response
     {
@@ -118,7 +112,7 @@ class InterController extends AbstractController
 
 
     /**
-     * @Route("/home/inter/presence/{id}", name="presence")
+     * @Route("/presence/{id}", name="presence")
      */
     public function presence($id, InterRepository $interRepository, Request $request, EntityManagerInterface $em): Response
     {
@@ -140,7 +134,7 @@ class InterController extends AbstractController
         ]);
     }
     /**
-     * @Route("/home/inter/insertion_mois", name="insertion_inter_mois",  methods={"GET"})
+     * @Route("/insertion_mois", name="insertion_inter_mois",  methods={"GET"})
      */
     public function insertion_inter_mois(UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em, ParametresRepository $parametresRepository): Response
     {
@@ -197,7 +191,7 @@ class InterController extends AbstractController
     }
 
     /**
-     * @Route("/home/inter/suppression_mois", name="suppression_inter_mois",  methods={"GET"})
+     * @Route("/suppression_mois", name="suppression_inter_mois",  methods={"GET"})
      */
     public function suppression_inter_mois(UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em, ParametresRepository $parametresRepository): Response
     {
@@ -218,7 +212,7 @@ class InterController extends AbstractController
     }
 
     /**
-     * @Route("/home/inter/suppression_inter/{id}", name="suppression_inter",  methods={"GET"})
+     * @Route("/suppression_inter/{id}", name="suppression_inter",  methods={"GET"})
      */
     public function suppression_inter($id, UserRepository $userRepository, InterRepository $interRepository, EntityManagerInterface $em, ParametresRepository $parametresRepository): Response
     {
@@ -237,7 +231,7 @@ class InterController extends AbstractController
     }
 
     /**
-     * @Route("/home/inter_periode/tech/{id}", name="inter_periode_tech")
+     * @Route("/inter_periode/tech/{id}", name="inter_periode_tech")
      */
     public function inter_periode_tech(
         $id,
