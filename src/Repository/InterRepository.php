@@ -93,6 +93,7 @@ class InterRepository extends ServiceEntityRepository
             ->setParameter('date_debut', $date_debut)
             ->setParameter('date_fin', $date_fin)
             ->setParameter('val', $technicien)
+            ->orderBy('i.date', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -107,6 +108,7 @@ class InterRepository extends ServiceEntityRepository
             ->andWhere('i.presence is null OR i.presence = false')
             ->setParameter('date_debut', $date_debut)
             ->setParameter('date_fin', $date_fin)
+            ->orderBy('i.date', 'ASC')
             ->getQuery()
             ->getResult();
     }

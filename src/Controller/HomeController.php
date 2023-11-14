@@ -13,16 +13,13 @@ class HomeController extends AbstractController
      */
     public function slash(): Response
     {
-
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_login');
     }
     /**
      * @Route("/home", name="app_home")
      */
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomController',
-        ]);
+        return $this->render('home/index.html.twig');
     }
 }
