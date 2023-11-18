@@ -12,11 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+/**
+ * @Route("/admin/recap")
+ */
 class RecapController extends AbstractController
 {
-    /**
-     * @Route("/admin/recap")
-     */
+
     private $requestStack;
 
     /**
