@@ -5,7 +5,7 @@
 {% block body %}
 <div class="row d-flex justify-content-center">
     <div class="col-md-3">
-        <h1 class="text-center">Toutes les Factures</h1>
+        <h1 class="text-center">Toutes les Factures <a href="{{path('change_year')}}" class="text-decoration-none text-dark">{{year}}</a></h1>
         <hr>
         <div class="text-center mb-2">
             <select class="form-select" id="mois" aria-label="Mois" onchange="submitPeriod()">

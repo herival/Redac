@@ -30,6 +30,7 @@ class FactureController extends AbstractController
         
         $periode = (new \DateTime('now'))->format('m');
         $annee = (new DateTime("now"))->format('Y');
+        $anne = "2023";
         
         $periode_param = $request->query->get('mois');
         if (isset($periode_param) && $periode_param != null) {
@@ -72,8 +73,13 @@ class FactureController extends AbstractController
         if (isset($periode_param) && $periode_param != null) {
             $periode = $periode_param;
         }
-        $annee = (new DateTime("now"))->format('Y');
-        $annee_charge = (new DateTime("now"))->format('Y');
+        //recupérer l'année dans la base de donnée
+        $annee = $parametresRepository->findOneByCle('year')->getValeur();
+        $annee_charge = $parametresRepository->findOneByCle('year')->getValeur();
+        if(!$annee){
+            $annee = (new DateTime("now"))->format('Y');
+            $annee_charge = (new DateTime("now"))->format('Y');
+        }
 
         $periode_charge = $periode + 1;
         if($periode_charge > 12){
@@ -110,7 +116,7 @@ class FactureController extends AbstractController
             "total_salaire" => $total_salaire, 
             "periode_charge" => $periode_charge, 
             "annee_charge" => $annee_charge, 
-
+            "year" => $annee
         ]);
     }
 }

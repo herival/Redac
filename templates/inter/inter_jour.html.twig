@@ -46,21 +46,16 @@
       </a>
     </div>
     {% endif %}
+    {% endfor %}
 
-
-
-
-
-  {% endfor %}
-
-</div>
+  </div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
 <script>
   const domain = window.location.origin;
-  let url = domain + "/home/inter?";
+  let url = domain + "/admin/inter?";
 
   function submitdate() {
     let date = document.getElementById('date').value;
