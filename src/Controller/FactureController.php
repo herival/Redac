@@ -50,7 +50,6 @@ class FactureController extends AbstractController
             'client' => $client,
             "mois_list" => $mois,
             "periode" => $periode, 
-
         ]);
     }
 
