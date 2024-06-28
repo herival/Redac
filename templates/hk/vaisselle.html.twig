@@ -1,0 +1,45 @@
+{% extends 'base.menage.html.twig' %}
+
+{% block title %}Menage{% endblock %}
+
+{% block body %}
+<h1 class="h1 text-center alert alert-info">Vaisselle</h1>
+<hr>
+<h3 class="text-center">Je suis {{app.user.prenom}}</h3>
+<div class="d-flex justify-content-center">
+    <a href="{{path('app_do_vaisselle')}}" class="btn btn-success text-center">J'ai fait la vaisselle!</a>
+</div>
+
+<hr>
+<h2 class="text-center">Historique</h2>
+<table class="table table-striped">
+    <thead>
+      <tr class="text-center">
+        <th scope="col">Date</th>
+        <th scope="col">User</th>
+        <th scope="col">Validé par</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for menage in derniere_vaisselle %}
+        <tr>
+            <td>{{menage.createdAt|date("d-m H:i")}}</td>
+            <td>{{menage.user}}</td>
+            <td>
+                {% if menage.validation == false and menage.user != app.user.prenom %}
+                    <a href="{{path('app_valid_vaisselle', {id:menage.id})}}" class="btn btn-danger w-100">Je valide</a>
+                {% elseif menage.validation == false and  menage.user == app.user.prenom %}
+                <span class="badge bg-warning w-100">En attente de validation</span>
+                {% else %}
+                <span class="badge bg-info w-100">{{menage.validateur}}</span>
+                    {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+
+    </tbody>
+  </table>
+  {% if is_granted ('ROLE_ADMIN') %}
+    <a href="{{path ('app_menu')}}" class="btn btn-danger w-100">Retour sur SLTEK</a>
+  {% endif %}
+{% endblock %}

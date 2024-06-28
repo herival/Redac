@@ -49,8 +49,22 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        $roles = $token->getRoleNames();
+        $route = 'app_home'; //route par défaut
+        // Rediriger en fonction du rôle de l'utilisateur
+
+
+        if (in_array('ROLE_ADMIN', $roles, true)) {
+            $route = 'app_menu';
+            }elseif (in_array('ROLE_TECH', $roles, true)){
+            $route = 'app_home';
+            }elseif (in_array('ROLE_MENAGE', $roles, true)){
+                $route = 'app_vaisselle';
+            }
+        // Définir la route par défaut
         // For example:
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+
+        return new RedirectResponse($this->urlGenerator->generate($route));
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
