@@ -163,6 +163,7 @@ class InterController extends AbstractController
 
 
         $techs = $userRepository->findByPoste('tech');
+        // dd($techs);
 
         foreach ($liste as $key => $value) {
 
@@ -179,6 +180,9 @@ class InterController extends AbstractController
 
                     $inter->setDate($date);
                     $inter->setTechnicien($tech);
+                    if (!$inter_encours && ($date->format('l')) != 'Saturday'){
+                        $inter->setPresence(true);
+                    }
                     $inter->setSalaire($tech->getBasesalaire());
 
                     $em->persist($inter);
