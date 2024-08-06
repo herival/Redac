@@ -46,6 +46,7 @@ class InterRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.date = :val')
+            ->andWhere('i.tech = ')
             ->setParameter('val', $date)
             ->getQuery()
             ->getResult();
